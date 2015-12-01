@@ -52,9 +52,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		});
 	}
 	
-	/**
-	 * Create the frame.
-	 */
+	 // Create the frame.
 	//Text Areas and Fields//
 	JTextArea tweetTextArea = new JTextArea();
 	JLabel clickTweetLabel = new JLabel("Click Tweet to create a Tweet");
