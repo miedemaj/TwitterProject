@@ -19,6 +19,8 @@ public class User {
                 userPassword = password;
                 onlineStatus = false;
                 ArrayList<String> followers = new ArrayList<String>();
+                ArrayList<String> privateMessages = new ArrayList<String>();
+                ArrayList<String> userTweets = new ArrayList<String>();
 		//userMap.put(userName, userName);
 		//ArrayList<String> userMessages = new ArrayList<String>();
 		
@@ -59,6 +61,14 @@ public class User {
 		}
 	}
 	
+	public void publicTweet() {
+		
+		
+	}
+	
+	public void privateMessage() {
+		
+	}
 	
 	//public void setStatus(boolean status) {
 		//onlineStatus = status;

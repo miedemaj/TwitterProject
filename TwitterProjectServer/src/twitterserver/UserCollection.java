@@ -7,6 +7,7 @@ public class UserCollection implements HashMapInterface {
 	HashMap<String, User> userMap = new HashMap<String, User>();
 	//ArrayList<String> userInformation = new ArrayList<String>();
 	ArrayList<String> onlineUsers = new ArrayList<String>();
+	ArrayList<String> Tweets = new ArrayList<String>();
 	
 	public UserCollection() {
 		
@@ -66,7 +67,20 @@ public class UserCollection implements HashMapInterface {
 		else {
 			return true;
 		}
-	}	
+	}
+	
+	public boolean checkSameName(String registered, String desiredUser) {
+		User username = userMap.get(registered);
+		if (desiredUser.equals(registered)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+			
+	}
+		
+		
 	public boolean followUser(String currentUser, String desiredUser) {
 		if (userMap.get(currentUser) != null) {
 			if (userMap.get(desiredUser) != null) {
@@ -90,6 +104,19 @@ public class UserCollection implements HashMapInterface {
 			}
 		}
 		return foll;
+	}
+	
+	public void sendPublicTweet(String tweet) {
+		
+	}
+	
+	public void sendPrivateMessage(String message) {
+		
+	}
+	
+	public void /*String*/ returnAllTweets() {
+		System.out.println(Tweets);
+
 	}
 	
 	
