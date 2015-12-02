@@ -207,12 +207,27 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		
 		//Send Private Message/////////////
 		if(e.getSource() == sendPrivateMessage) {
-			String messageToUser = JOptionPane.showInputDialog(this, "Enter the username that you would like to message: ");
-			JOptionPane.showMessageDialog(this, "Press Ok then Enter your message in the text area shown: ");
 			privateMessageTextArea.setVisible(true);
 			privateMessageTextArea.setEditable(true);
 			confirmSendButton.setVisible(true);
+			String recipient = JOptionPane.showInputDialog(this, "Who would you like to message?");
+			try {
+				String host = "127.0.1.1";
+				Socket sock = new Socket( host, TWITTER_PORT);
+				BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
+				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
+				out.println("PRIVATE MESSAGE");
+				out.println(recipient);
+			
 		}
+		catch ( UnknownHostException x ) {
+	            System.err.println( "TwitterClient:  Host doesn't exist" );
+	        }
+	    catch ( IOException x ) {
+	            System.err.println("IOEXCEPTION");
+	            System.err.println( x.getMessage() );
+	        }
+	}
 		if(e.getSource() == confirmSendButton) {
 			JOptionPane.showMessageDialog(this, "Will send the messageToUser string to the entered username");
 		}
