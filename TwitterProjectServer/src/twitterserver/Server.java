@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -14,15 +15,13 @@ import javax.swing.JOptionPane;
 
 public class Server {
 	static Scanner keyboard = new Scanner(System.in);
-	
-	//String inputName = keyboard.nextLine();
-	//String inputPassword = keyboard.nextLine();
-	
+
 	
 	
 	
 	
 	public static void main(String[] args) {
+		//LinkedList<String> publicTweets = new LinkedList<String>();
 	try	{
 		
 		ServerSocket listen = new ServerSocket (2010);
@@ -51,13 +50,13 @@ public class Server {
 				p = in.readLine();
 				if (userCollect.checkValidName(w) == false) {
 				boolean avail = userCollect.registerUser(w, p);
-				if (avail == true) {
-					out.println("Registration Successful");
-					out.println("Your new username is: " + w);
-				}
-				else{
-					out.println("Registration Failed");
-				}
+					if (avail == true) {
+						out.println("Registration Successful");
+						out.println("Your new username is: " + w);
+					}
+					else{
+						out.println("Registration Failed");
+					}
 				
 				}
 				else {
@@ -76,10 +75,13 @@ public class Server {
 					k = in.readLine();
 					boolean correct = userCollect.signIn(j, k);
 					if (correct == true) {
+						out.println("VALID LOGIN NAME");
 						userCollect.onlineUsers.add(j);
-						out.println("Log On Successful");
+						out.println("Log on Successful");
 						out.println("Current followers are: ");
-						out.println(userCollect.getFollowers(j));
+						String q = userCollect.getFollowers(j);
+						out.println(q);
+						out.println(userCollect.getMessages(j));
 					}
 				}
 				else {
@@ -109,15 +111,21 @@ public class Server {
 				if (userCollect.checkValidName(w) == true) {
 					out.println("USER TO FOLLOW?");
 					u = in.readLine();
-					if (userCollect.checkValidName(u)) {
-						userCollect.followUser(w, u);
-						out.println("Follow Successful. You are now following" + " " + u);
+					if (userCollect.checkValidName(u) == true) {
+						System.out.println("Desired is Valid");
+						//userCollect.followUser(w, u);
+						if (userCollect.followUser(w, u) == true) {
+							out.println("Follow Successful. You are now following" + " " + u);
+						}
+						else {
+							System.out.println("Follow didn't work");
+						}
 					}
 					else {
 						out.println("Follow Unsuccessful");
 					}
 				//client.close();
-				}
+			}
 				else {
 					out.println("Username Invalid");
 					w = in.readLine();
@@ -130,8 +138,36 @@ public class Server {
 						}
 						else {
 							out.println("Follow Unsuccessful");
-						}
-					}
+				}
+			}
+		}
+	}
+			
+			//Tweet//////////////////
+			
+			else if (line.equals("TWEET")) {
+				out.println("Enter what you'd like to tweet");
+				w = in.readLine();
+				u = in.readLine();
+				//publicTweets.add(w);
+				if (userCollect.checkValidName(u) == true) {
+					userCollect.sendPublicTweet(u, w);
+					out.println(userCollect.Tweets);
+				}
+				
+			}
+			
+			///PRIVATE MESSAGE/////////////////
+			
+			else if (line.equals("PRIVATE MESSAGE")) {
+				w = in.readLine();
+				if (userCollect.checkValidName(w) == true) {
+					out.println("LEGIT");
+					u = in.readLine();
+					userCollect.sendPrivateMessage(w, u);
+				}
+				else {
+					out.println("NOT VALID USERNAME");
 				}
 			}
 		//listen.close();
@@ -140,5 +176,6 @@ public class Server {
 	catch( IOException e) {
 	    System.err.println( e.getMessage() );
 	}
+	/////////////////////////////////////
 }
 }

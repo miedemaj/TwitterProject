@@ -1,6 +1,7 @@
 package twitterserver;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -10,17 +11,20 @@ public class User {
 	String userName;
 	String userPassword;
 	boolean onlineStatus;
-	ArrayList<String> followedUsers = new ArrayList<String>();
+	ArrayList<String> followedUsers;
 	//JList<String> followers = new JList<String>(followedUsers);
 	ArrayList<String> followers;
+	LinkedList<String> userTweets;
+	ArrayList<String> privateMessages;
 	
 	public User(String username, String password) {
                 userName = username;
                 userPassword = password;
                 onlineStatus = false;
-                ArrayList<String> followers = new ArrayList<String>();
-                ArrayList<String> privateMessages = new ArrayList<String>();
-                ArrayList<String> userTweets = new ArrayList<String>();
+                followers = new ArrayList<String>();
+                privateMessages = new ArrayList<String>();
+                followedUsers = new ArrayList<String>();
+                userTweets = new LinkedList<String>();
 		//userMap.put(userName, userName);
 		//ArrayList<String> userMessages = new ArrayList<String>();
 		
@@ -46,12 +50,16 @@ public class User {
 		}
 	}
 	
+	/*public ArrayList<String> getFollow() {
+		return followers;
+	}*/
+	
 	public boolean logOff() {
 			onlineStatus = false;
 			return true;
 		
 }
-	public boolean followUser(String userDesired) {
+	public boolean followAUser(String userDesired) {
 		if (followedUsers.contains(userDesired)) {
 			return false;
 		}
@@ -61,13 +69,23 @@ public class User {
 		}
 	}
 	
-	public void publicTweet() {
-		
+	public boolean addFollower(String username) {
+		if (followers.contains(username)) {
+			return false;
+		}
+		else {
+			followers.add(username);
+			return true;
+		}
+	}
+	
+	public void publicTweet(String tweet) {
+		userTweets.add(tweet);
 		
 	}
 	
-	public void privateMessage() {
-		
+	public void privateMessage(String message) {
+		privateMessages.add(message);
 	}
 	
 	//public void setStatus(boolean status) {
