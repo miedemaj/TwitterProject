@@ -82,18 +82,39 @@ public class UserCollection implements HashMapInterface {
 		}
 			
 	}
+	
+	public boolean checkFollower(String currentUse, String username) {
+		User current = userMap.get(currentUse);
+		User desired = userMap.get(username);
+		if (current.followers.contains(currentUse) || desired.followers.contains(username)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean checkFollowing(String currentUse, String username) {
+		User current = userMap.get(currentUse);
+		User desired = userMap.get(username);
+		if (current.followedUsers.contains(username)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 		
 		
 	public boolean followUser(String currentUser, String desiredUser) {
-		if (userMap.get(currentUser) != null) {
-			if (userMap.get(desiredUser) != null) {
+		User current = userMap.get(currentUser);
+		User desired = userMap.get(desiredUser);
+		if (current != null) {
+			if (desired != null) {
 				//if (userMap.get(currentUser).followAUser(desiredUser) == true) {
-					System.out.println("made it to last if statement");
-					return userMap.get(currentUser).followAUser(desiredUser);
-				//}
-				//else {
-					//return false;
-				//}
+				System.out.println("made it to last if statement");
+				desired.addFollower(currentUser);
+				return current.followAUser(desiredUser);
 			}
 			else {
 				return false;
@@ -138,7 +159,7 @@ public class UserCollection implements HashMapInterface {
 				}
 		}*/
 	
-	public String getFollowers(String username) {
+	/*public String getFollowers(String username) {
 		User user = userMap.get(username);
 		if (userMap.get(username) != null) {
 			for (int i = 0; i < user.followers.size(); i++) {
@@ -151,6 +172,11 @@ public class UserCollection implements HashMapInterface {
 			return "No Followers";
 		}
 		
+	}*/
+	
+	public ArrayList<String> getFollowers(String user) {
+		User current = userMap.get(user);
+		return current.followers;
 	}
 	
 	public void sendPublicTweet(String user, String tweet) {

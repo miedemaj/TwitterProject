@@ -146,10 +146,19 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		tweetPane.setVisible(true);
 		inputTextArea.setLineWrap(true);
 		inputTextArea.setWrapStyleWord(true);
+		privateTextArea.setLineWrap(true);
+		privateTextArea.setWrapStyleWord(true);
 		privateMessageTextArea.setEditable(false);
 		privateMessageTextArea.setVisible(true);
+		privateMessageTextArea.setLineWrap(true);
+		privateMessageTextArea.setWrapStyleWord(true);
+		privatePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		privatePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		privatePane.setVisible(true);
 		followerTextArea.setVisible(true);
 		followerTextArea.setEditable(false);
+		followerTextArea.setLineWrap(true);
+		followerTextArea.setWrapStyleWord(true);
 		
 		
 		//Content Pane///////////////
@@ -224,7 +233,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				out.println(tweetText);
 				out.println(onlineUser);
 				String tweet = in.readLine();
-				tweetTextArea.append(new Timestamp(date.getTime()) + tweet + newline);
+				tweetTextArea.append(new Timestamp(date.getTime()) + this.onlineUser + tweet + newline);
 				sock.close();
 				
 	}
@@ -258,6 +267,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
 				out.println("PRIVATE MESSAGE");
 				out.println(recipient);
+				out.println(onlineUser);
 				String w = in.readLine();
 				if (w.equals("LEGIT")) {
 					int tweetInputData = JOptionPane.showConfirmDialog(SwingUtilities.getWindowAncestor(this),privateTextArea, "Enter Your Message for" + recipient, JOptionPane.OK_CANCEL_OPTION);
@@ -344,7 +354,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            	String u = in.readLine();
 	            	followerTextArea.setText(w + newline + u);
 	            	String x = in.readLine();
-	            	privateMessageTextArea.setText(x);
+	            	privateMessageTextArea.append(x + newline);
 	            	btnSendTweet.setEnabled(true);
 	            	viewUserButton.setEnabled(true);
 	            	sendPrivateMessage.setEnabled(true);
@@ -355,6 +365,9 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            	}
 	            else if (response.equals("Invalid Username")) {
 	            	JOptionPane.showMessageDialog(this, "Invalid Username");
+	            }
+	            else if (response.equals("FOLLOW ERROR")) {
+	            	JOptionPane.showMessageDialog(this, "You aren't following this user/They aren't following you");
 	            }
 			}
 			catch ( UnknownHostException x ) {

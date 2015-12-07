@@ -79,8 +79,7 @@ public class Server {
 						userCollect.onlineUsers.add(j);
 						out.println("Log on Successful");
 						out.println("Current followers are: ");
-						String q = userCollect.getFollowers(j);
-						out.println(q);
+						out.println(userCollect.getFollowers(j));
 						out.println(userCollect.getMessages(j));
 					}
 				}
@@ -160,12 +159,18 @@ public class Server {
 			///PRIVATE MESSAGE/////////////////
 			
 			else if (line.equals("PRIVATE MESSAGE")) {
-				w = in.readLine();
+				w = in.readLine(); //recipient on client side
+				p = in.readLine();
 				if (userCollect.checkValidName(w) == true) {
 					out.println("LEGIT");
 					u = in.readLine();
+					if (userCollect.checkFollowing(p, w) == true || userCollect.checkFollower(w, p) == true) {
 					userCollect.sendPrivateMessage(w, u);
 				}
+					else {
+						out.println("FOLLOW ERROR");
+					}
+			}
 				else {
 					out.println("NOT VALID USERNAME");
 				}
