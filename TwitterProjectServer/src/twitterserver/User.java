@@ -79,6 +79,9 @@ public class User {
 		}
 	}
 	
+	public LinkedList<String> getTweets() {
+		return userTweets;
+	}
 	public void publicTweet(String tweet) {
 		userTweets.add(tweet);
 		

@@ -36,7 +36,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	Scanner keyboard = new Scanner(System.in);
-	static final int TWITTER_PORT = 2010;
+	static final int TWITTER_PORT = 2009;
 	String onlineUser;
 	private final static String newline = "\n";
 	
@@ -64,6 +64,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	////////////////////////
 	String tweetText;
 	String privMessageText;
+	String currentOnline;
 	
 	 // Create the frame.
 	//Text Areas and Fields//
@@ -226,14 +227,17 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				out.println("TWEET");
 				String w = in.readLine();
 				JOptionPane.showMessageDialog(this, w);
+				if (inputTextArea != null) {
+					inputTextArea.setText(null);
 				int tweetInputData = JOptionPane.showConfirmDialog(SwingUtilities.getWindowAncestor(this),inputTextArea, "Enter Your Tweet", JOptionPane.OK_CANCEL_OPTION);
 				if (tweetInputData == JOptionPane.OK_OPTION) {
 					  tweetText = inputTextArea.getText();
+					}
 				}
 				out.println(tweetText);
 				out.println(onlineUser);
 				String tweet = in.readLine();
-				tweetTextArea.append(new Timestamp(date.getTime()) + this.onlineUser + tweet + newline);
+				tweetTextArea.append(new Timestamp(date.getTime()) + " " + this.onlineUser + tweet + newline);
 				sock.close();
 				
 	}
@@ -248,9 +252,28 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		
 		//View User's Tweets////////////
 		if(e.getSource() == viewUserButton) {
-			String viewedUser = JOptionPane.showInputDialog(this, "Enter the username you would like to view: ");
+			try {
+				String host = "127.0.1.1";
+				Socket sock = new Socket( host, TWITTER_PORT);
+				BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
+				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
+				String viewedUser = JOptionPane.showInputDialog(this, "Enter the username you would like to view: ");
+				out.println("VIEW USER");
+				out.println(viewedUser);
+				String usersTweets = in.readLine();
+				tweetTextArea.append(usersTweets + newline);
+				
 			
 			
+			
+		}
+			catch ( UnknownHostException x ) {
+	            System.err.println( "TwitterClient:  Host doesn't exist" );
+	        }
+	    catch ( IOException x ) {
+	            System.err.println("IOEXCEPTION");
+	            System.err.println( x.getMessage() );
+	        }
 		}
 		//////////////////////////////////////////////////////////////////////////
 		
@@ -310,10 +333,9 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            out.println(username);
 	            out.println(password);
 	            response = in.readLine();
-	            response2 = in.readLine();
+	            //response2 = in.readLine();
 	            onlineUser = username;
-	            JOptionPane.showMessageDialog(this, response + " " + response2);
-	            
+	            JOptionPane.showMessageDialog(this, response/*response2*/);
 	            //in.close();
 				sock.close();
 		}
@@ -345,7 +367,10 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            //String valid = in.readLine();
             	response = in.readLine();
             	//JOptionPane.showMessageDialog(this, response);
-	            if (response.equals("VALID LOGIN NAME")) {
+            	if (response.equals("ALREADY ON")) {
+            		JOptionPane.showMessageDialog(this, "You're already logged in");
+            	}
+            	if (response.equals("VALID LOGIN NAME")) {
 	            	String resp2 = in.readLine();
 	            	JOptionPane.showMessageDialog(this, resp2);
 	            	onlineUser = username;

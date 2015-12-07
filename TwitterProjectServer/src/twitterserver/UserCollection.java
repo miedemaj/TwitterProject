@@ -179,6 +179,11 @@ public class UserCollection implements HashMapInterface {
 		return current.followers;
 	}
 	
+	
+	public LinkedList<String> getTweets(String user) {
+		User user1 = userMap.get(user);
+		return user1.getTweets();
+	}
 	public void sendPublicTweet(String user, String tweet) {
 		User us = userMap.get(user);
 		String addedTweet = tweet;

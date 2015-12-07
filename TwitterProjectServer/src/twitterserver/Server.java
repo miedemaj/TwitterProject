@@ -22,9 +22,10 @@ public class Server {
 	
 	public static void main(String[] args) {
 		//LinkedList<String> publicTweets = new LinkedList<String>();
+		String currentOnlineUser = "";
 	try	{
 		
-		ServerSocket listen = new ServerSocket (2010);
+		ServerSocket listen = new ServerSocket (2009);
 		System.out.println( "Listening on port:  " + listen.getLocalPort() );
 	    System.out.println("Listening on address: " + InetAddress.getLocalHost());
 	    UserCollection userCollect = new UserCollection();
@@ -51,12 +52,12 @@ public class Server {
 				if (userCollect.checkValidName(w) == false) {
 				boolean avail = userCollect.registerUser(w, p);
 					if (avail == true) {
-						out.println("Registration Successful");
-						out.println("Your new username is: " + w);
+						out.println("Registration Successful. Your new username is: " + w);
+						//out.println("Your new username is: " + w);
 					}
-					else{
+					/*else{
 						out.println("Registration Failed");
-					}
+					}*/
 				
 				}
 				else {
@@ -72,16 +73,22 @@ public class Server {
 				System.out.println(j);
 				System.out.println(userCollect.checkValidName(j));
 				if (userCollect.checkValidName(j) == true) {
+					if (currentOnlineUser.equals(j)) {
+						out.println("ALREADY ON");
+					}
+					else {
 					k = in.readLine();
 					boolean correct = userCollect.signIn(j, k);
 					if (correct == true) {
 						out.println("VALID LOGIN NAME");
 						userCollect.onlineUsers.add(j);
+						currentOnlineUser = j;
 						out.println("Log on Successful");
 						out.println("Current followers are: ");
 						out.println(userCollect.getFollowers(j));
 						out.println(userCollect.getMessages(j));
 					}
+				}
 				}
 				else {
 					out.println("Invalid Username");
@@ -174,6 +181,13 @@ public class Server {
 				else {
 					out.println("NOT VALID USERNAME");
 				}
+			}
+			
+			else if (line.equals("VIEW USER")) {
+				w = in.readLine();
+				out.println(userCollect.getTweets(w));
+				
+				
 			}
 		//listen.close();
 		}
