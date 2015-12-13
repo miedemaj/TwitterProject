@@ -86,7 +86,7 @@ public class UserCollection implements HashMapInterface {
 	public boolean checkFollower(String currentUse, String username) {
 		User current = userMap.get(currentUse);
 		User desired = userMap.get(username);
-		if (current.followers.contains(currentUse) || desired.followers.contains(username)) {
+		if (current.followers.contains(username) /*|| desired.followers.contains(username)*/) {
 			return true;
 		}
 		else {
@@ -183,6 +183,10 @@ public class UserCollection implements HashMapInterface {
 	public LinkedList<String> getTweets(String user) {
 		User user1 = userMap.get(user);
 		return user1.getTweets();
+	}
+	
+	public LinkedList<String> getAll() {
+		return Tweets;
 	}
 	public void sendPublicTweet(String user, String tweet) {
 		User us = userMap.get(user);

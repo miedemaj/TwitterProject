@@ -23,6 +23,7 @@ public class Server {
 	public static void main(String[] args) {
 		//LinkedList<String> publicTweets = new LinkedList<String>();
 		String currentOnlineUser = "";
+		ArrayList<String> onlineUsers = new ArrayList<String>();
 	try	{
 		
 		ServerSocket listen = new ServerSocket (2009);
@@ -87,6 +88,7 @@ public class Server {
 						out.println("Current followers are: ");
 						out.println(userCollect.getFollowers(j));
 						out.println(userCollect.getMessages(j));
+						out.println(userCollect.getAll());
 					}
 				}
 				}
@@ -101,6 +103,7 @@ public class Server {
 				w = in.readLine();
 				if (userCollect.signOff(w) == true) {
 					userCollect.onlineUsers.remove(w);
+					currentOnlineUser = "";
 					out.println("Log Off Successful");
 					
 				}
@@ -113,10 +116,9 @@ public class Server {
 			
 		//Follow User//
 			else if (line.equals("FOLLOW")) {
-				w = in.readLine();
-				if (userCollect.checkValidName(w) == true) {
 					out.println("USER TO FOLLOW?");
 					u = in.readLine();
+					w = currentOnlineUser;
 					if (userCollect.checkValidName(u) == true) {
 						System.out.println("Desired is Valid");
 						//userCollect.followUser(w, u);
@@ -127,14 +129,10 @@ public class Server {
 							System.out.println("Follow didn't work");
 						}
 					}
-					else {
-						out.println("Follow Unsuccessful");
-					}
 				//client.close();
-			}
 				else {
 					out.println("Username Invalid");
-					w = in.readLine();
+					w = currentOnlineUser;
 					if (userCollect.checkValidName(w) == true) {
 						out.println("USER TO FOLLOW?");
 						u = in.readLine();
@@ -146,8 +144,8 @@ public class Server {
 							out.println("Follow Unsuccessful");
 				}
 			}
-		}
-	}
+			}
+			}
 			
 			//Tweet//////////////////
 			
@@ -158,9 +156,14 @@ public class Server {
 				//publicTweets.add(w);
 				if (userCollect.checkValidName(u) == true) {
 					userCollect.sendPublicTweet(u, w);
-					out.println(userCollect.Tweets);
+					out.println(w);
 				}
 				
+			}
+			
+			//REFRESH//////////////
+			else if (line.equals("REFRESH")) {
+				out.println(userCollect.getAll());
 			}
 			
 			///PRIVATE MESSAGE/////////////////
@@ -171,7 +174,7 @@ public class Server {
 				if (userCollect.checkValidName(w) == true) {
 					out.println("LEGIT");
 					u = in.readLine();
-					if (userCollect.checkFollowing(p, w) == true || userCollect.checkFollower(w, p) == true) {
+					if (userCollect.checkFollower(w, p) == true) {
 					userCollect.sendPrivateMessage(w, u);
 				}
 					else {
@@ -183,12 +186,30 @@ public class Server {
 				}
 			}
 			
+			else if (line.equals("REPLY")) {
+				w = in.readLine(); //recipient on client side
+				p = in.readLine();
+				if (userCollect.checkValidName(w) == true) {
+					out.println("LEGIT");
+					u = in.readLine();
+					if (userCollect.checkFollower(w, p) == true) {
+					userCollect.sendPrivateMessage(w, u);
+				}
+					else {
+						out.println("FOLLOW ERROR");
+					}
+			}
+				else {
+					out.println("NOT VALID USERNAME");
+				}
+			}
+			
+			///VIEW OTHER USER'S TWEETS///////////
 			else if (line.equals("VIEW USER")) {
 				w = in.readLine();
 				out.println(userCollect.getTweets(w));
-				
-				
 			}
+			////////////////////////////////////
 		//listen.close();
 		}
 	}

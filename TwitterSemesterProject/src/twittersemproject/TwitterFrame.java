@@ -1,6 +1,8 @@
 package twittersemproject;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.color.*;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.BoxLayout;
@@ -50,6 +52,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				try {
 					TwitterFrame frame = new TwitterFrame();
 					frame.setVisible(true);
+					frame.getContentPane().setBackground(Color.BLACK);
 				} 
 				catch (Exception e) {
 					e.printStackTrace();
@@ -74,16 +77,18 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	JScrollPane scrollPane = new JScrollPane( inputTextArea );
 	JTextArea privateTextArea = new JTextArea(15, 10);
 	JScrollPane privatePane = new JScrollPane( privateTextArea );
-	JLabel clickTweetLabel = new JLabel("Click Tweet to create a Tweet");
+	//JLabel clickTweetLabel = new JLabel("Click Tweet to create a Tweet");
 	JTextArea privateMessageTextArea = new JTextArea();
 	JLabel lblCurrentUser = new JLabel("Current User:");
 	JTextArea followerTextArea = new JTextArea();
+	JLabel lblFollowers = new JLabel("Followers: ");
 	
 	//Buttons/////////
 	JButton btnSendTweet = new JButton("Tweet");
 	JButton viewUserButton = new JButton("View Other User's Tweets");
 	JButton sendPrivateMessage = new JButton("Send a Private Message");
 	JButton btnFollowUser = new JButton("Follow User");
+	JButton btnRefresh = new JButton("Refresh Tweets");
 	
 	//Menu items
 	JMenuBar menuBar = new JMenuBar();
@@ -95,6 +100,8 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	JMenuItem mntmSignin = new JMenuItem("Sign-In");
 	JMenuItem mntmSignout = new JMenuItem("Sign-Out");
 	JLabel lblUser = new JLabel("User");
+	private final JLabel lblPrivateMessages = new JLabel("Private Messages:");
+	private final JButton btnReplyToPm = new JButton("Reply to PM");
 	
 	
 	
@@ -105,12 +112,15 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setSize(1200,600);
+	
 		
 		//Button Action Listeners/////////
 		btnSendTweet.addActionListener(this);
 		viewUserButton.addActionListener(this);
 		sendPrivateMessage.addActionListener(this);
 		btnFollowUser.addActionListener(this);
+		btnRefresh.addActionListener(this);
+		btnReplyToPm.addActionListener(this);
 		
 		/////Menu Bar////////////////
 		setJMenuBar(menuBar);
@@ -134,6 +144,8 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		viewUserButton.setEnabled(false);
 		sendPrivateMessage.setEnabled(false);
 		btnFollowUser.setEnabled(false);
+		btnRefresh.setEnabled(false);
+		btnReplyToPm.setEnabled(false);
 		
 		
 		
@@ -167,32 +179,40 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		SpringLayout sl_contentPane = new SpringLayout();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, btnFollowUser, 94, SpringLayout.SOUTH, lblUser);
-		sl_contentPane.putConstraint(SpringLayout.WEST, btnFollowUser, 131, SpringLayout.EAST, tweetPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, viewUserButton, -38, SpringLayout.NORTH, followerTextArea);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, followerTextArea, 94, SpringLayout.SOUTH, privateMessageTextArea);
-		sl_contentPane.putConstraint(SpringLayout.WEST, followerTextArea, 194, SpringLayout.EAST, tweetPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, followerTextArea, -25, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, followerTextArea, -401, SpringLayout.EAST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnReplyToPm, 0, SpringLayout.NORTH, btnSendTweet);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnReplyToPm, -60, SpringLayout.WEST, privateMessageTextArea);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblPrivateMessages, 0, SpringLayout.NORTH, lblCurrentUser);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblPrivateMessages, 0, SpringLayout.EAST, lblFollowers);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, sendPrivateMessage, 166, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, sendPrivateMessage, -6, SpringLayout.WEST, privateMessageTextArea);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnFollowUser, 0, SpringLayout.NORTH, viewUserButton);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnFollowUser, -14, SpringLayout.WEST, followerTextArea);
+		sl_contentPane.putConstraint(SpringLayout.WEST, tweetPane, 10, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, tweetPane, -874, SpringLayout.EAST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnSendTweet, 6, SpringLayout.EAST, tweetPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnSendTweet, -185, SpringLayout.NORTH, viewUserButton);
+		sl_contentPane.putConstraint(SpringLayout.WEST, viewUserButton, 6, SpringLayout.EAST, tweetPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, viewUserButton, -107, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, tweetPane, 45, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, tweetPane, -7, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblCurrentUser, -6, SpringLayout.NORTH, lblUser);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblCurrentUser, -242, SpringLayout.WEST, privateMessageTextArea);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblUser, 1, SpringLayout.NORTH, tweetPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblUser, 175, SpringLayout.EAST, tweetPane);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, followerTextArea, 87, SpringLayout.SOUTH, privateMessageTextArea);
+		sl_contentPane.putConstraint(SpringLayout.WEST, followerTextArea, 483, SpringLayout.EAST, tweetPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, followerTextArea, -32, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, followerTextArea, 0, SpringLayout.EAST, privateMessageTextArea);
 		sl_contentPane.putConstraint(SpringLayout.WEST, privateMessageTextArea, 483, SpringLayout.EAST, tweetPane);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, privateMessageTextArea, 59, SpringLayout.NORTH, tweetTextArea);
 		sl_contentPane.putConstraint(SpringLayout.EAST, privateMessageTextArea, -112, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblCurrentUser, 40, SpringLayout.EAST, btnSendTweet);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, tweetPane, 27, SpringLayout.SOUTH, btnSendTweet);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, tweetPane, -7, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, sendPrivateMessage, 0, SpringLayout.SOUTH, lblCurrentUser);
-		sl_contentPane.putConstraint(SpringLayout.EAST, sendPrivateMessage, -139, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, viewUserButton, 390, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, tweetPane, 10, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, tweetPane, -74, SpringLayout.WEST, viewUserButton);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, privateMessageTextArea, -309, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblUser, -673, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblUser, 6, SpringLayout.SOUTH, lblCurrentUser);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblCurrentUser, 5, SpringLayout.NORTH, btnSendTweet);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnSendTweet, -523, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, btnSendTweet, 10, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, clickTweetLabel, 10, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, clickTweetLabel, -6, SpringLayout.NORTH, btnSendTweet);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblFollowers, -6, SpringLayout.NORTH, followerTextArea);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblFollowers, -231, SpringLayout.EAST, contentPane);
+		//sl_contentPane.putConstraint(SpringLayout.WEST, clickTweetLabel, 10, SpringLayout.WEST, contentPane);
+		//sl_contentPane.putConstraint(SpringLayout.SOUTH, clickTweetLabel, -6, SpringLayout.NORTH, btnSendTweet);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnRefresh, 6, SpringLayout.EAST, tweetPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnRefresh, -28, SpringLayout.NORTH, btnSendTweet);
 		
 		contentPane.setLayout(sl_contentPane);
 		contentPane.add(tweetPane);
@@ -202,23 +222,25 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		contentPane.add(btnFollowUser);
 		
 		//Add Labels and Areas/Fields/////////////////
-		contentPane.add(clickTweetLabel);
+		lblFollowers.setForeground(Color.CYAN);
+		lblCurrentUser.setForeground(Color.CYAN);
+		lblUser.setForeground(Color.RED);
+		//contentPane.add(clickTweetLabel);
 		contentPane.add(privateMessageTextArea);
 		contentPane.add(lblCurrentUser);
 		contentPane.add(lblUser);
 		contentPane.add(followerTextArea);
-		
-		
-
-		
-		
+		contentPane.add(lblFollowers);
+		contentPane.add(lblPrivateMessages);
+		contentPane.add(btnRefresh);
+		contentPane.add(btnReplyToPm);
 	}
 	
 	
 	
 	public void actionPerformed(ActionEvent e) {
 		//Tweeting Actions//////////
-		if (e.getSource() == btnSendTweet) { //will also have method to check online status. if offline, will prompt message asking to log in///
+		if (e.getSource() == btnSendTweet) { 
 			try {
 				String host = "127.0.1.1";
 				Socket sock = new Socket( host, TWITTER_PORT);
@@ -226,18 +248,28 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
 				out.println("TWEET");
 				String w = in.readLine();
+				if (w.equals("Enter what you'd like to tweet")) {
 				JOptionPane.showMessageDialog(this, w);
 				if (inputTextArea != null) {
 					inputTextArea.setText(null);
 				int tweetInputData = JOptionPane.showConfirmDialog(SwingUtilities.getWindowAncestor(this),inputTextArea, "Enter Your Tweet", JOptionPane.OK_CANCEL_OPTION);
-				if (tweetInputData == JOptionPane.OK_OPTION) {
+					if (tweetInputData == JOptionPane.OK_OPTION) {
 					  tweetText = inputTextArea.getText();
+					  out.println(tweetText);
+					  out.println(onlineUser);
+					  String tweet = in.readLine();
+					  tweetTextArea.append(new Timestamp(date.getTime()) + " " + this.onlineUser + newline + tweet + newline);
+					}
+					
+					if (tweetInputData == JOptionPane.CANCEL_OPTION) {
+					JOptionPane.showMessageDialog(this, "Tweet Cancelled");
 					}
 				}
-				out.println(tweetText);
-				out.println(onlineUser);
-				String tweet = in.readLine();
-				tweetTextArea.append(new Timestamp(date.getTime()) + " " + this.onlineUser + tweet + newline);
+				
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "Error while creating tweet, please try again");
+				}
 				sock.close();
 				
 	}
@@ -262,6 +294,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				out.println(viewedUser);
 				String usersTweets = in.readLine();
 				tweetTextArea.append(usersTweets + newline);
+				JOptionPane.showMessageDialog(this, usersTweets);
 				
 			
 			
@@ -293,15 +326,21 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				out.println(onlineUser);
 				String w = in.readLine();
 				if (w.equals("LEGIT")) {
+					if (privateTextArea != null) {
+						privateTextArea.setText(null);
 					int tweetInputData = JOptionPane.showConfirmDialog(SwingUtilities.getWindowAncestor(this),privateTextArea, "Enter Your Message for" + recipient, JOptionPane.OK_CANCEL_OPTION);
 					if (tweetInputData == JOptionPane.OK_OPTION) {
 					  privMessageText = privateTextArea.getText();
-				}
-					out.println(privMessageText);
+					}
+				out.println(privMessageText);
+					}
 			}
 				else {
 					String u = in.readLine();
-					JOptionPane.showMessageDialog(this, u);
+					if (u.equals("FOLLOW ERROR")) {
+						JOptionPane.showMessageDialog(this, onlineUser + "tried to message you, but they aren't following you");
+					//JOptionPane.showMessageDialog(this, u);
+				}
 				}
 				
 		}
@@ -333,10 +372,8 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            out.println(username);
 	            out.println(password);
 	            response = in.readLine();
-	            //response2 = in.readLine();
 	            onlineUser = username;
-	            JOptionPane.showMessageDialog(this, response/*response2*/);
-	            //in.close();
+	            JOptionPane.showMessageDialog(this, response);
 				sock.close();
 		}
 			catch ( UnknownHostException x ) {
@@ -364,9 +401,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            out.println("SIGN IN");
 	            out.println(username);
 	            out.println(password);
-	            //String valid = in.readLine();
             	response = in.readLine();
-            	//JOptionPane.showMessageDialog(this, response);
             	if (response.equals("ALREADY ON")) {
             		JOptionPane.showMessageDialog(this, "You're already logged in");
             	}
@@ -379,14 +414,16 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            	String u = in.readLine();
 	            	followerTextArea.setText(w + newline + u);
 	            	String x = in.readLine();
-	            	privateMessageTextArea.append(x + newline);
+	            	privateMessageTextArea.setText(x + newline);
+	            	String t = in.readLine();
+	            	tweetTextArea.setText(t);
 	            	btnSendTweet.setEnabled(true);
 	            	viewUserButton.setEnabled(true);
 	            	sendPrivateMessage.setEnabled(true);
 	            	btnFollowUser.setEnabled(true);
-	            
-	            	//in.close();
-	            	//sock.close();
+	            	btnRefresh.setEnabled(true);
+	            	btnReplyToPm.setEnabled(true);
+	            	mntmRegister.setEnabled(false);
 	            	}
 	            else if (response.equals("Invalid Username")) {
 	            	JOptionPane.showMessageDialog(this, "Invalid Username");
@@ -425,6 +462,11 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            	viewUserButton.setEnabled(false);
 	            	sendPrivateMessage.setEnabled(false);
 	            	btnFollowUser.setEnabled(false);
+	            	mntmRegister.setEnabled(true);
+	            	btnRefresh.setEnabled(false);
+	            	tweetTextArea.setText("");
+	            	privateTextArea.setText("");
+	            	followerTextArea.setText("");
 	            	sock.close();
 	            }
 	            
@@ -444,7 +486,6 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		
 		//FOLLOW USER//////////////////////////////////////////
 		if(e.getSource() == btnFollowUser) {
-			String username = JOptionPane.showInputDialog(this, "Enter your username");
 			try {
 	            String host = "127.0.1.1";
 	            String response;
@@ -452,7 +493,6 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 	            PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
 	            out.println("FOLLOW");
-	            out.println(username);
 	            response = in.readLine();
 	            if (response.equals("USER TO FOLLOW?")) {
 	            	String userFollow = JOptionPane.showInputDialog(this, "Enter the username that you would like to follow");
@@ -461,17 +501,13 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            	followerTextArea.append(newline + h + newline);
 	            }
 	            else if (response.equals("Username Invalid")) {
-	            	username = JOptionPane.showInputDialog(this, "Please enter your username again");
-	            	out.println(username);
-	            	response = in.readLine();
-	            	if (response.equals("USER TO FOLLOW?")) {
-	            	String userFollow = JOptionPane.showInputDialog(this, "Enter the username that you would like to follow");
+	            	String userFollow = JOptionPane.showInputDialog(this, "Please enter your username again");
 	            	out.println(userFollow);
+	            	response = in.readLine();
 	            	String h = in.readLine();
 	            	followerTextArea.append(h + newline);
 	            	
 	            	}
-	            }
 	            
 	            sock.close();
 			} 
@@ -486,6 +522,65 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		}
 		//////////////////////////////////////////////////////////////////////////////
 		
+		//REFRESH////////////
+		if(e.getSource() == btnRefresh) {
+			try {
+	            String host = "127.0.1.1";
+	            Socket sock = new Socket( host, TWITTER_PORT);
+	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
+	            PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
+	            out.println("REFRESH");
+	            String w = in.readLine();
+	            tweetTextArea.setText(w);
+	            
+	            sock.close();
+		}
+			catch ( UnknownHostException x ) {
+	            System.err.println( "TwitterClient:  Host doesn't exist" );
+	        }
+			catch ( IOException x ) {
+	            System.err.println("IOEXCEPTION");
+	            System.err.println( x.getMessage() );
+	        }
+		}
+		////////////////////////////
+		
+		//REPLY////////////////
+		if(e.getSource() == btnReplyToPm) {
+			String recipient = JOptionPane.showInputDialog(this, "Who would you like to reply to?");
+			try {
+				String host = "127.0.1.1";
+				Socket sock = new Socket( host, TWITTER_PORT);
+				BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
+				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
+				out.println("REPLY");
+				out.println(recipient);
+				out.println(onlineUser);
+				String w = in.readLine();
+				if (w.equals("LEGIT")) {
+					int tweetInputData = JOptionPane.showConfirmDialog(SwingUtilities.getWindowAncestor(this),privateTextArea, "Enter Your Message for" + recipient, JOptionPane.OK_CANCEL_OPTION);
+					if (tweetInputData == JOptionPane.OK_OPTION) {
+					  privMessageText = privateTextArea.getText();
+				}
+					out.println(privMessageText);
+			}
+				else {
+					String u = in.readLine();
+					if (u.equals("FOLLOW ERROR")) {
+						JOptionPane.showMessageDialog(this, onlineUser + "tried to message you, but they aren't following you");
+				}
+			}
+				
+		}
+		catch ( UnknownHostException x ) {
+	            System.err.println( "TwitterClient:  Host doesn't exist" );
+	        }
+	    catch ( IOException x ) {
+	            System.err.println("IOEXCEPTION");
+	            System.err.println( x.getMessage() );
+	        }
+			
+		}
 		
 		//About in menu//////////
 		if(e.getSource() == mntmAbout) {
