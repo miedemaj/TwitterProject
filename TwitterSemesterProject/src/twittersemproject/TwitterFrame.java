@@ -1,18 +1,13 @@
 package twittersemproject;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.color.*;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import java.awt.event.ActionListener;
@@ -22,7 +17,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
@@ -293,13 +287,9 @@ public class TwitterFrame extends JFrame implements ActionListener {
 				out.println("VIEW USER");
 				out.println(viewedUser);
 				String usersTweets = in.readLine();
-				tweetTextArea.append(usersTweets + newline);
 				JOptionPane.showMessageDialog(this, usersTweets);
-				
-			
-			
-			
 		}
+			
 			catch ( UnknownHostException x ) {
 	            System.err.println( "TwitterClient:  Host doesn't exist" );
 	        }
@@ -362,7 +352,6 @@ public class TwitterFrame extends JFrame implements ActionListener {
 			try {
 	            String host = "127.0.1.1";
 	            String response;
-	            String response2;
 	            Socket sock = new Socket( host, TWITTER_PORT);
 	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 	            PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
