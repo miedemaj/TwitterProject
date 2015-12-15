@@ -1,16 +1,14 @@
 package twitterserver;
 import java.io.IOException;
+
 import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
 
 
 public class Server {
@@ -23,7 +21,7 @@ public class Server {
 	public static void main(String[] args) {
 		//LinkedList<String> publicTweets = new LinkedList<String>();
 		String currentOnlineUser = "";
-		ArrayList<String> onlineUsers = new ArrayList<String>();
+		//ArrayList<String> onlineUsers = new ArrayList<String>();
 	try	{
 		
 		ServerSocket listen = new ServerSocket (2009);
@@ -210,7 +208,6 @@ public class Server {
 				out.println(userCollect.getTweets(w));
 			}
 			////////////////////////////////////
-		//listen.close();
 		}
 	}
 	catch( IOException e) {

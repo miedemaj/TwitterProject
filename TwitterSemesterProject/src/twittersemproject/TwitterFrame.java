@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import javax.swing.ScrollPaneConstants;
 
+@SuppressWarnings("serial")
 public class TwitterFrame extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
@@ -236,7 +237,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		//Tweeting Actions//////////
 		if (e.getSource() == btnSendTweet) { 
 			try {
-				String host = "127.0.1.1";
+				String host = "10.21.36.148";
 				Socket sock = new Socket( host, TWITTER_PORT);
 				BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
@@ -279,7 +280,8 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		//View User's Tweets////////////
 		if(e.getSource() == viewUserButton) {
 			try {
-				String host = "127.0.1.1";
+				String host = "10.21.36.148";
+				@SuppressWarnings("resource")
 				Socket sock = new Socket( host, TWITTER_PORT);
 				BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
@@ -307,7 +309,8 @@ public class TwitterFrame extends JFrame implements ActionListener {
 			privateMessageTextArea.setEditable(false);
 			String recipient = JOptionPane.showInputDialog(this, "Who would you like to message?");
 			try {
-				String host = "127.0.1.1";
+				String host = "10.21.36.148";
+				@SuppressWarnings("resource")
 				Socket sock = new Socket( host, TWITTER_PORT);
 				BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
@@ -350,7 +353,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		if(e.getSource() == mntmRegister) {
 			
 			try {
-	            String host = "127.0.1.1";
+	            String host = "10.21.36.148";
 	            String response;
 	            Socket sock = new Socket( host, TWITTER_PORT);
 	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
@@ -382,9 +385,10 @@ public class TwitterFrame extends JFrame implements ActionListener {
 			String username = JOptionPane.showInputDialog(this, "Please Enter Your Username: ");
 			String password = JOptionPane.showInputDialog(this,"Please Enter Your Password: ");
 			try {
-	            String host = "127.0.1.1";
+	            String host = "10.21.36.148";
 	            String response;
-	            Socket sock = new Socket( host, TWITTER_PORT);
+	            @SuppressWarnings("resource")
+				Socket sock = new Socket( host, TWITTER_PORT);
 	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 	            PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
 	            out.println("SIGN IN");
@@ -436,7 +440,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		if(e.getSource() == mntmSignout) {
 			String signConfirm = JOptionPane.showInputDialog(this, "Are you sure you wish to sign out? (Yes/No)");
 			try {
-	            String host = "127.0.1.1";
+	            String host = "10.21.36.148";
 	            String response;
 	            Socket sock = new Socket( host, TWITTER_PORT);
 	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
@@ -476,7 +480,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		//FOLLOW USER//////////////////////////////////////////
 		if(e.getSource() == btnFollowUser) {
 			try {
-	            String host = "127.0.1.1";
+	            String host = "10.21.36.148";
 	            String response;
 	            Socket sock = new Socket( host, TWITTER_PORT);
 	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
@@ -514,7 +518,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		//REFRESH////////////
 		if(e.getSource() == btnRefresh) {
 			try {
-	            String host = "127.0.1.1";
+	            String host = "10.21.36.148";
 	            Socket sock = new Socket( host, TWITTER_PORT);
 	            BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 	            PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
@@ -538,7 +542,8 @@ public class TwitterFrame extends JFrame implements ActionListener {
 		if(e.getSource() == btnReplyToPm) {
 			String recipient = JOptionPane.showInputDialog(this, "Who would you like to reply to?");
 			try {
-				String host = "127.0.1.1";
+				String host = "10.21.36.148";
+				@SuppressWarnings("resource")
 				Socket sock = new Socket( host, TWITTER_PORT);
 				BufferedReader in = new BufferedReader( new InputStreamReader( sock.getInputStream() ) );
 				PrintWriter out = new PrintWriter( sock.getOutputStream(), true );
