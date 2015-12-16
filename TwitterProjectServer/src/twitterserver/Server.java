@@ -162,6 +162,9 @@ public class Server {
 			//REFRESH//////////////
 			else if (line.equals("REFRESH")) {
 				out.println(userCollect.getAll());
+				String x = in.readLine();
+				out.println(userCollect.getFollowers(x));
+				out.println(userCollect.getMessages(x));
 			}
 			
 			///PRIVATE MESSAGE/////////////////
@@ -172,7 +175,7 @@ public class Server {
 				if (userCollect.checkValidName(w) == true) {
 					out.println("LEGIT");
 					u = in.readLine();
-					if (userCollect.checkFollower(w, p) == true) {
+					if (userCollect.checkFollower(p, w) == true) {
 					userCollect.sendPrivateMessage(w, u);
 				}
 					else {

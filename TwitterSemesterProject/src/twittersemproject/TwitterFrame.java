@@ -83,7 +83,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	JButton viewUserButton = new JButton("View Other User's Tweets");
 	JButton sendPrivateMessage = new JButton("Send a Private Message");
 	JButton btnFollowUser = new JButton("Follow User");
-	JButton btnRefresh = new JButton("Refresh Tweets");
+	JButton btnRefresh = new JButton("Refresh");
 	
 	//Menu items
 	JMenuBar menuBar = new JMenuBar();
@@ -459,6 +459,7 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            	btnRefresh.setEnabled(false);
 	            	tweetTextArea.setText("");
 	            	privateTextArea.setText("");
+	            	privateMessageTextArea.setText("");
 	            	followerTextArea.setText("");
 	            	sock.close();
 	            }
@@ -525,6 +526,11 @@ public class TwitterFrame extends JFrame implements ActionListener {
 	            out.println("REFRESH");
 	            String w = in.readLine();
 	            tweetTextArea.setText(w);
+	            out.println(onlineUser);
+	            String a = in.readLine();
+	            followerTextArea.setText(a);
+	            String o = in.readLine();
+	            privateMessageTextArea.setText(o);
 	            
 	            sock.close();
 		}
